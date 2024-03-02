@@ -6,3 +6,6 @@ start:
 lints:
 	poetry run ruff check --fix ${SOURCE_DIR}/*
 	poetry run black ${SOURCE_DIR}/*
+
+coverage:
+	coverage run -m pytest && coverage report -m

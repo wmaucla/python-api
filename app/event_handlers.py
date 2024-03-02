@@ -1,17 +1,18 @@
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
-
+import logging
 from fastapi import FastAPI
+
+logger = logging.getLogger(__name__)
 
 
 async def some_async_function():
-    # Your asynchronous startup logic goes here
     print("Async startup logic")
 
 
 async def some_async_cleanup_function():
-    # Your asynchronous cleanup logic goes here
-    print("Async cleanup logic")
+    logger.info("Shutting down")
+    print("Shutting down")
 
 
 @asynccontextmanager
