@@ -1,9 +1,15 @@
 import jwt
 from datetime import datetime, timedelta
+from pydantic import BaseModel
 
 # Secret key for signing and verifying JWT
 SECRET_KEY = "test_secret_key"
 ALGORITHM = "HS256"
+
+
+class LoginData(BaseModel):
+    username: str
+    password: str
 
 
 # Function to create a JWT token
