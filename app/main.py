@@ -1,8 +1,10 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import Config
 from app.event_handlers import lifespan
 from app.router import router
+from app.middleware import log_path
 
 
 def get_app() -> FastAPI:
@@ -17,7 +19,14 @@ def get_app() -> FastAPI:
 
 app = get_app()
 
+# Middleware function to add CORS headers
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins (replace with specific origins as needed)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all HTTP headers
+)
 
-"""
-Middleware functions can intercept requests and responses, allowing you to perform additional operations before they reach the route handler or before the response is sent. Here's an example of a FastAPI application with a middleware function:
-"""
+# Add the custom middleware
+app.middleware("http")(log_path)
