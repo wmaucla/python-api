@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Response, Body, Request, Depends, HTTPException
+from pydantic import BaseModel
 from datetime import timedelta
 from app.jwt_handler import create_jwt_token, decode_jwt_token, LoginData
 
@@ -32,9 +33,23 @@ async def login_for_access_token(request: Request, login_data: LoginData = Body(
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
 
+class TokenData(BaseModel):
+    token: str
+
+
 # Protected endpoint that requires authentication
 @router.get("/protected")
 async def protected_route(
     request: Request, current_user: dict = Depends(decode_jwt_token)
 ):
     return {"message": "You are authenticated!", "user": current_user}
+
+
+# curl -X POST "http://localhost:8000/token?username=testuser&password=testpassword"
+# curl -X GET "http://localhost:8000/protected?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTcwOTQxOTE0OH0.U0UUn5pRe4fuYGoRoM_3lJTsX-xwMC2Io8ZU-x-DBug"
+"""
+curl -X GET "http://localhost:8000/protected" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTcwOTQyMDM5OX0.EJK-Tg3KOTE6H2OXUSwS8aDep_spFg2O-Yw3j1kPSXY"
+
+curl -X GET "http://localhost:8000/protected?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTcwOTQyMDM5OX0.EJK-Tg3KOTE6H2OXUSwS8aDep_spFg2O-Yw3j1kPSXY"
+
+"""
