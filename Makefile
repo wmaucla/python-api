@@ -1,7 +1,7 @@
 SOURCE_DIR = app
 
 start:
-	poetry run gunicorn --worker-class uvicorn.workers.UvicornWorker app.main:app
+	poetry run gunicorn --worker-class uvicorn.workers.UvicornWorker main:app
 
 lints:
 	poetry run ruff check --fix ${SOURCE_DIR}/*

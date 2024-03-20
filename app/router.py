@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, Body, Request, Depends, HTTPException
 from pydantic import BaseModel
 from datetime import timedelta
-from app.jwt_handler import create_jwt_token, decode_jwt_token, LoginData
+from jwt_handler import create_jwt_token, decode_jwt_token, LoginData
 
 router = APIRouter()
 

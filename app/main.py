@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.config import Config
-from app.event_handlers import lifespan
-from app.router import router
-from app.middleware import log_path
+from config import Config
+from event_handlers import lifespan
+from router import router
+from middleware import log_path
 
 
 def get_app() -> FastAPI:
