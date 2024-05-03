@@ -1,0 +1,5 @@
+replicaCount: 1
+
+image:
+  name: python-api
+  tag: latest

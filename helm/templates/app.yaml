@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: python-api
+  name: python-api
+  namespace: default
+spec:
+  replicas: {{ .Values.replicaCount }}
+  # replicas: 1
+  selector:
+    matchLabels:
+      app: python-api
+  template:
+    metadata:
+      labels:
+        app: python-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8000"
+    spec:
+      containers:
+      - name: python-api-base-image
+        image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+        # image: myimage
+        imagePullPolicy: Never  # needed for local minikube pull
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+        readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
